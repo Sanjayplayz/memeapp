@@ -65,75 +65,99 @@ fun MemeViewerInstagramStyle(modifier: Modifier = Modifier) { // Removed fillMax
 
     val memes = listOf(
         Meme(
-            R.drawable.whatsapp_image_2025_08_09_at_5_05_17_pm, // Ensure these drawables exist
+            R.drawable.whatsapp_image_2025_08_09_at_5_05_17_pm,
             username = "code_master",
             caption = "#kotlin #python #java"
         ),
         Meme(
-            R.drawable.whatsapp_image_2025_08_09_at_5_05_38_pm, // Ensure these drawables exist
+            R.drawable.whatsapp_image_2025_08_09_at_5_05_38_pm,
             username = "physics_nerd",
             caption = "Heaviest objects in the universe!"
         ),
         Meme(
-            R.drawable.whatsapp_image_2025_08_09_at_5_06_21_pm, // Ensure these drawables exist
+            R.drawable.whatsapp_image_2025_08_09_at_5_06_21_pm,
+            username = "dev_life",
+            caption = "When Android Studio just won't build..."
+        ),
+        Meme(
+            R.drawable.whatsapp_image_2025_08_09_at_5_09_25_pm,
+            username = "dev_life",
+            caption = "When Android Studio just won't build..."
+        ),
+        Meme(
+            R.drawable.whatsapp_image_2025_08_10_at_12_48_04_am,
+            username = "dev_life",
+            caption = "When Android Studio just won't build..."
+        ),
+        Meme(
+            R.drawable.whatsapp_image_2025_08_10_at_12_48_40_am,
+            username = "dev_life",
+            caption = "When Android Studio just won't build..."
+        ),
+        Meme(
+            R.drawable.whatsapp_image_2025_08_10_at_12_52_10_am,
+            username = "dev_life",
+            caption = "When Android Studio just won't build..."
+        ),
+        Meme(
+            R.drawable.whatsapp_image_2025_08_10_at_12_53_24_am,
             username = "dev_life",
             caption = "When Android Studio just won't build..."
         )
     )
 
-    var currentIndex by remember { mutableIntStateOf(0) } // Changed to mutableIntStateOf for primitive
+    var currentIndex by remember { mutableIntStateOf(0) }
     var liked by remember { mutableStateOf(false) }
     var showHeart by remember { mutableStateOf(false) }
-    var imageWidth by remember { mutableIntStateOf(0) } // Changed to mutableIntStateOf for primitive
+    var imageWidth by remember { mutableIntStateOf(0) }
     val coroutineScope = rememberCoroutineScope()
 
     Box(
-        modifier = modifier.fillMaxSize(), // Applied fillMaxSize here from the parameter
+        modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth() // Column takes full width
-                .wrapContentHeight() // Column wraps its content vertically
-                .align(Alignment.Center) // Align the Column itself to the center of the Box
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .align(Alignment.Center)
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(400.dp) // Consider aspect ratio or dynamic height based on image
+                    .height(400.dp)
                     .onSizeChanged { size ->
                         imageWidth = size.width
                     }
-                    .pointerInput(currentIndex, imageWidth) { // Keying pointerInput
+                    .pointerInput(currentIndex, imageWidth) {
                         detectTapGestures(
                             onDoubleTap = {
                                 liked = !liked
                                 showHeart = true
                                 coroutineScope.launch {
-                                    delay(700) // Consider making this a constant
+                                    delay(700)
                                     showHeart = false
                                 }
                             },
                             onTap = { offset ->
-                                if (imageWidth == 0) return@detectTapGestures // Guard clause
+                                if (imageWidth == 0) return@detectTapGestures
 
                                 if (offset.x > imageWidth / 2) {
                                     currentIndex = (currentIndex + 1) % memes.size
                                     liked = false // Reset like status on new meme
                                 } else {
-                                    currentIndex = (currentIndex - 1 + memes.size) % memes.size // Ensure positive modulo
-                                    liked = false // Reset like status on new meme
+                                    currentIndex = (currentIndex - 1 + memes.size) % memes.size
+                                    liked = false
                                 }
                             }
                         )
                     },
-                contentAlignment = Alignment.Center // Align content of this Box (Image and Icon) to its center
+                contentAlignment = Alignment.Center
             ) {
                 Image(
                     painter = painterResource(id = memes[currentIndex].imageRes),
                     contentDescription = "Meme Image",
-                    modifier = Modifier.fillMaxSize() // Image fills the inner Box
-                    // Consider contentScale = ContentScale.Fit or ContentScale.Crop
+                    modifier = Modifier.fillMaxSize()
                 )
 
 
@@ -147,7 +171,7 @@ fun MemeViewerInstagramStyle(modifier: Modifier = Modifier) { // Removed fillMax
 
                     Icon(
                         imageVector = Icons.Default.Favorite,
-                        contentDescription = "Liked Heart", // More descriptive
+                        contentDescription = "Liked Heart",
                         tint = Color.Red,
                         modifier = Modifier.size(100.dp)
                     )
@@ -173,7 +197,7 @@ fun MemeViewerInstagramStyle(modifier: Modifier = Modifier) { // Removed fillMax
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = if (liked) "1 like" else "0 likes", // Simple like counter
+                    text = if (liked) "1 like" else "0 likes",
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.Gray
                 )
